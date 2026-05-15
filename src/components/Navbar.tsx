@@ -37,7 +37,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#hero" className="flex items-center gap-3 cursor-pointer">
             <Image
-              src="/sushi.png"
+              src="/logo-2.png"
               alt="Kinzora Sushi"
               width={52}
               height={52}

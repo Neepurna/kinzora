@@ -166,43 +166,37 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: Logo visual */}
+        {/* Right: Sushi visual */}
         <motion.div
           initial={{ opacity: 0, scale: 0.85 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
-          className="relative flex-shrink-0"
+          className="relative flex-shrink-0 flex items-center"
         >
-          {/* Outer glow ring */}
+          {/* Ambient glow behind image */}
           <div
-            className="absolute inset-0 rounded-full"
+            className="absolute pointer-events-none"
             style={{
-              border: '1px solid rgba(200,155,82,0.15)',
-              margin: '-20px',
-              background:
-                'conic-gradient(from 0deg, transparent 60%, rgba(200,155,82,0.2) 80%, transparent 100%)',
-              animation: 'spinCW 30s linear infinite',
-            }}
-          />
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              border: '1px dashed rgba(200,155,82,0.08)',
-              margin: '-45px',
-              animation: 'spinCCW 20s linear infinite',
+              width: '110%',
+              height: '60%',
+              top: '20%',
+              left: '-5%',
+              background: 'radial-gradient(ellipse, rgba(200,155,82,0.12) 0%, transparent 70%)',
+              filter: 'blur(30px)',
             }}
           />
 
-          {/* Logo */}
+          {/* Sushi image — no crop so reflection shows */}
           <div className="relative z-10">
             <Image
               src="/sushi.png"
               alt="Kinzora Sushi"
-              width={320}
-              height={320}
-              className="rounded-full"
+              width={520}
+              height={520}
+              className=""
               style={{
-                filter: 'drop-shadow(0 0 60px rgba(200,155,82,0.25))',
+                filter: 'drop-shadow(0 20px 60px rgba(200,155,82,0.20)) drop-shadow(0 0 30px rgba(200,155,82,0.12))',
+                objectFit: 'contain',
               }}
               priority
             />
