@@ -126,6 +126,11 @@
   50% { transform: translateY(8px); }
 }
 
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
 @layer utilities {
   .font-heading {
     font-family: var(--font-playfair), Georgia, serif;
