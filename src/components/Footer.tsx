@@ -16,7 +16,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start gap-4">
             <div className="flex items-center gap-3">
               <Image
-                src="/logo-2.png"
+                src="/sushi.png"
                 alt="Kinzora Sushi"
                 width={44}
                 height={44}

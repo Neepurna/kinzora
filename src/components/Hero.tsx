@@ -196,7 +196,7 @@ export default function Hero() {
           {/* Logo */}
           <div className="relative z-10">
             <Image
-              src="/logo-2.png"
+              src="/sushi.png"
               alt="Kinzora Sushi"
               width={320}
               height={320}
