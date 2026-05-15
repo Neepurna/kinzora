@@ -71,7 +71,7 @@ export default function Hero() {
       </div>
 
       {/* Main content */}
-      <div className="kinzora-container relative z-10 pt-32 pb-20 flex flex-col lg:flex-row items-center gap-16 lg:gap-0">
+      <div className="kinzora-container relative z-10 pt-32 pb-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-8">
         {/* Left: Text */}
         <div className="flex-1 text-center lg:text-left">
           {/* Japanese accent */}
@@ -89,7 +89,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="font-heading text-[clamp(3rem,8vw,7rem)] font-800 leading-[1.0] tracking-tight text-[#F8F4EE] mb-6"
+            className="font-heading text-[clamp(2.8rem,5.5vw,5.5rem)] font-800 leading-[1.05] tracking-tight text-[#F8F4EE] mb-6"
           >
             Fresh{' '}
             <em className="not-italic text-gold-gradient">Taste,</em>
@@ -168,39 +168,19 @@ export default function Hero() {
 
         {/* Right: Sushi visual */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
-          className="relative flex-shrink-0 flex items-center"
+          className="flex-shrink-0 flex items-center justify-center"
         >
-          {/* Ambient glow behind image */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              width: '110%',
-              height: '60%',
-              top: '20%',
-              left: '-5%',
-              background: 'radial-gradient(ellipse, rgba(200,155,82,0.12) 0%, transparent 70%)',
-              filter: 'blur(30px)',
-            }}
+          <Image
+            src="/sushi.png"
+            alt="Kinzora Sushi"
+            width={560}
+            height={560}
+            style={{ objectFit: 'contain' }}
+            priority
           />
-
-          {/* Sushi image — no crop so reflection shows */}
-          <div className="relative z-10">
-            <Image
-              src="/sushi.png"
-              alt="Kinzora Sushi"
-              width={520}
-              height={520}
-              className=""
-              style={{
-                filter: 'drop-shadow(0 20px 60px rgba(200,155,82,0.20)) drop-shadow(0 0 30px rgba(200,155,82,0.12))',
-                objectFit: 'contain',
-              }}
-              priority
-            />
-          </div>
         </motion.div>
       </div>
 
