@@ -166,119 +166,21 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* Right: Premium Sushi Composition */}
+        {/* Right: Sushi visual */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 1.4, delay: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
           className="relative flex-shrink-0"
           style={{ width: 520, height: 560 }}
         >
-          {/* L1: Deep atmospheric golden haze */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                'radial-gradient(ellipse 85% 70% at 50% 45%, rgba(200,155,82,0.09) 0%, rgba(200,155,82,0.04) 42%, transparent 72%)',
-              filter: 'blur(24px)',
-              animation: 'glowPulse 7s ease-in-out infinite',
-            }}
+          <Image
+            src="/sushi.png"
+            alt="Kinzora premium nigiri platter"
+            fill
+            style={{ objectFit: 'contain', objectPosition: 'center 46%' }}
+            priority
           />
-
-          {/* L2: Warm focal bloom — directional key light */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              width: '55%',
-              height: '44%',
-              top: '18%',
-              left: '22%',
-              background:
-                'radial-gradient(ellipse, rgba(200,155,82,0.08) 0%, transparent 70%)',
-              filter: 'blur(22px)',
-              animation: 'glowPulse 9s ease-in-out 1.5s infinite',
-            }}
-          />
-
-          {/* L3: Surface glimmer — horizontal counter line */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              bottom: '23%',
-              left: '8%',
-              right: '8%',
-              height: '1px',
-              background:
-                'linear-gradient(90deg, transparent, rgba(200,155,82,0.10) 25%, rgba(200,155,82,0.20) 50%, rgba(200,155,82,0.10) 75%, transparent)',
-              filter: 'blur(1.5px)',
-            }}
-          />
-
-          {/* L4: Sushi image — multi-stop feathered radial mask */}
-          <div className="absolute inset-0" style={{ zIndex: 2 }}>
-            <Image
-              src="/sushi.png"
-              alt="Kinzora premium nigiri platter"
-              fill
-              style={{
-                objectFit: 'contain',
-                objectPosition: 'center 46%',
-                maskImage:
-                  'radial-gradient(ellipse 84% 82% at 50% 47%, black 0%, black 24%, rgba(0,0,0,0.96) 37%, rgba(0,0,0,0.78) 51%, rgba(0,0,0,0.42) 63%, rgba(0,0,0,0.10) 74%, transparent 84%)',
-                WebkitMaskImage:
-                  'radial-gradient(ellipse 84% 82% at 50% 47%, black 0%, black 24%, rgba(0,0,0,0.96) 37%, rgba(0,0,0,0.78) 51%, rgba(0,0,0,0.42) 63%, rgba(0,0,0,0.10) 74%, transparent 84%)',
-              }}
-              priority
-            />
-          </div>
-
-          {/* L5: Directional rim light — top-left edge */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              zIndex: 3,
-              background:
-                'radial-gradient(ellipse 48% 38% at 18% 14%, rgba(200,155,82,0.07) 0%, transparent 70%)',
-            }}
-          />
-
-          {/* L6: Ground shadow — anchors composition to surface */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              zIndex: 1,
-              bottom: '21%',
-              left: '18%',
-              right: '18%',
-              height: '5%',
-              background: 'radial-gradient(ellipse, rgba(0,0,0,0.65) 0%, transparent 75%)',
-              filter: 'blur(14px)',
-            }}
-          />
-
-          {/* L7: Micro atmospheric particles */}
-          {[
-            { size: 2,   x: '22%', y: '22%', opacity: 0.28, dur: 6 },
-            { size: 1.5, x: '80%', y: '30%', opacity: 0.22, dur: 7 },
-            { size: 1,   x: '12%', y: '58%', opacity: 0.18, dur: 5 },
-            { size: 2,   x: '84%', y: '68%', opacity: 0.20, dur: 8 },
-            { size: 1.5, x: '58%', y: '12%', opacity: 0.25, dur: 6 },
-          ].map((p, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full pointer-events-none"
-              style={{
-                zIndex: 4,
-                width: p.size,
-                height: p.size,
-                left: p.x,
-                top: p.y,
-                background: '#C89B52',
-                opacity: p.opacity,
-                animation: `orbFloat ${p.dur}s ease-in-out ${i * 0.6}s infinite`,
-              }}
-            />
-          ))}
         </motion.div>
       </div>
 
