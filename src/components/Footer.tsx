@@ -72,7 +72,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-[rgba(200,155,82,0.08)] flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[10px] text-[#D6D0C7]/25 tracking-wider">
-            © 2024 Kinzora Sushi · Todos los derechos reservados
+            © 2026 Kinzora Sushi
           </p>
           <div className="flex items-center gap-1">
             <span className="text-[10px] text-[#D6D0C7]/25">Diseñado con</span>
