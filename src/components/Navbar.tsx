@@ -37,10 +37,11 @@ export default function Navbar() {
           {/* Logo */}
           <a href="#hero" className="flex items-center gap-3 cursor-pointer">
             <Image
-              src="/logo-2.png"
+              src="/Kinzora-Sushi-Logo.png"
               alt="Kinzora Sushi"
               width={52}
               height={52}
+              quality={100}
               className="rounded-full"
               priority
             />
@@ -74,12 +75,6 @@ export default function Navbar() {
               className="text-sm text-[#D6D0C7]/60 hover:text-[#C89B52] transition-colors duration-200 cursor-pointer"
             >
               663 108 134
-            </a>
-            <a
-              href="#location"
-              className="px-5 py-2.5 bg-gold-gradient text-[#0A0A0A] text-sm font-semibold tracking-wider rounded-full hover:opacity-90 transition-opacity duration-200 cursor-pointer"
-            >
-              Reservar
             </a>
           </div>
 
@@ -129,14 +124,14 @@ export default function Navbar() {
               </motion.a>
             ))}
             <motion.a
-              href="#location"
+              href="tel:663108134"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.08 }}
               onClick={() => setMobileOpen(false)}
               className="mt-4 px-8 py-3 bg-gold-gradient text-[#0A0A0A] font-semibold tracking-wider rounded-full cursor-pointer"
             >
-              Reservar Mesa
+              663 108 134
             </motion.a>
           </motion.div>
         )}
