@@ -11,9 +11,9 @@ export default function Footer() {
   return (
     <footer className="bg-[#060606] border-t border-[rgba(200,155,82,0.1)]">
       <div className="kinzora-container py-14">
-        <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-10">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-10">
           {/* Brand */}
-          <div className="flex flex-col items-center md:items-start gap-4">
+          <div className="flex flex-col items-center md:items-start gap-4 md:self-end">
             <div className="flex items-center gap-3">
               <Image
                 src="/sushi.png"
@@ -37,7 +37,7 @@ export default function Footer() {
           </div>
 
           {/* Nav */}
-          <div className="flex flex-col items-center md:items-start gap-3">
+          <div className="flex flex-col items-center md:items-end gap-3">
             <p className="text-[10px] text-[#C89B52] tracking-[0.3em] uppercase mb-1">Navegación</p>
             {navLinks.map((link) => (
               <a
@@ -51,7 +51,7 @@ export default function Footer() {
           </div>
 
           {/* Contact */}
-          <div className="flex flex-col items-center md:items-start gap-3">
+          <div className="flex flex-col items-center md:items-end gap-3">
             <p className="text-[10px] text-[#C89B52] tracking-[0.3em] uppercase mb-1">Contacto</p>
             <a
               href="tel:663108134"
