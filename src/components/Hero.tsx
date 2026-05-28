@@ -89,7 +89,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.35 }}
-            className="font-heading text-[clamp(2.8rem,5.5vw,5.5rem)] font-800 leading-[1.05] tracking-tight text-[#F8F4EE] mb-6"
+            className="font-heading text-[clamp(2.2rem,5.5vw,5.5rem)] font-800 leading-[1.05] tracking-tight text-[#F8F4EE] mb-6"
           >
             Fresh{' '}
             <em className="not-italic text-gold-gradient">Taste,</em>
@@ -139,7 +139,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.1 }}
-            className="flex items-center gap-8 mt-14 justify-center lg:justify-start"
+            className="flex items-center gap-5 sm:gap-8 mt-10 sm:mt-14 justify-center lg:justify-start"
           >
             {[
               { value: '50+', label: 'Platos' },
@@ -159,8 +159,7 @@ export default function Hero() {
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
-          className="relative flex-shrink-0"
-          style={{ width: 520, height: 560 }}
+          className="relative flex-shrink-0 w-[280px] h-[300px] sm:w-[380px] sm:h-[420px] lg:w-[520px] lg:h-[560px]"
         >
           <Image
             src="/sushi.png"

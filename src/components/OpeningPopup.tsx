@@ -120,7 +120,7 @@ export default function OpeningPopup() {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  28 de Mayo
+                  29 de Mayo
                 </span>
               </h2>
 

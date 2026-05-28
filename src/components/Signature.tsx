@@ -41,7 +41,7 @@ export default function Signature() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
           {signatureItems.map((item, i) => (
             <motion.div
               key={item.number}
@@ -54,7 +54,7 @@ export default function Signature() {
               style={{ border: '1px solid rgba(200,155,82,0.15)' }}
             >
               {/* Food photo */}
-              <div className="relative h-52 bg-[#0c0c0c] overflow-hidden">
+              <div className="relative h-36 sm:h-52 bg-[#0c0c0c] overflow-hidden">
                 <Image
                   src={signatureImages[i]}
                   alt={item.name}
@@ -79,11 +79,11 @@ export default function Signature() {
               />
 
               {/* Text */}
-              <div className="p-5">
-                <h3 className="font-heading text-[1.05rem] font-600 text-[#F8F4EE] mb-1.5 leading-tight group-hover:text-[#C89B52] transition-colors duration-200">
+              <div className="p-3 sm:p-5">
+                <h3 className="font-heading text-[0.85rem] sm:text-[1.05rem] font-600 text-[#F8F4EE] mb-1 sm:mb-1.5 leading-tight group-hover:text-[#C89B52] transition-colors duration-200">
                   {item.name}
                 </h3>
-                <p className="text-xs text-[#D6D0C7]/55 leading-relaxed mb-4 line-clamp-3">
+                <p className="text-[10px] sm:text-xs text-[#D6D0C7]/55 leading-relaxed mb-3 sm:mb-4 line-clamp-2 sm:line-clamp-3">
                   {item.description}
                 </p>
                 <div className="flex items-center justify-between">
