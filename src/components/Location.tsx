@@ -142,7 +142,7 @@ export default function Location() {
               <span className="text-gold-gradient italic">única?</span>
             </h3>
             <p className="text-[#D6D0C7]/60 max-w-md mx-auto mb-8">
-              Reserva tu mesa y disfruta de la mejor cocina japonesa en Madrid. Llámanos o pide directamente.
+              Disfruta de la mejor cocina japonesa en Madrid. Llámanos o pide directamente.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
