@@ -27,7 +27,7 @@ export default function Footer() {
                   KINZORA SUSHI
                 </p>
                 <p className="text-[9px] tracking-[0.35em] text-[#D6D0C7]/40 uppercase">
-                  Fresh Taste · Happy Moments
+                  Sabor Auténtico · Arte Japonés
                 </p>
               </div>
             </div>

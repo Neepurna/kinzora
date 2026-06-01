@@ -91,11 +91,8 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.35 }}
             className="font-heading text-[clamp(2.2rem,5.5vw,5.5rem)] font-800 leading-[1.05] tracking-tight text-[#F8F4EE] mb-6"
           >
-            Fresh{' '}
-            <em className="not-italic text-gold-gradient">Taste,</em>
-            <br />
-            Happy{' '}
-            <span className="text-gold-gradient">Moments</span>
+            Kinzora{' '}
+            <span className="text-gold-gradient">Sushi</span>
           </motion.h1>
 
           {/* Decorative divider */}
