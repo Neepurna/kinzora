@@ -76,6 +76,12 @@ export default function Navbar() {
             >
               663 108 134
             </a>
+            <a
+              href="/menu"
+              className="px-5 py-2 bg-gold-gradient text-[#0A0A0A] text-sm font-semibold tracking-wider rounded-full hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              Pedir Online
+            </a>
           </div>
 
           {/* Mobile Hamburger */}
@@ -124,14 +130,14 @@ export default function Navbar() {
               </motion.a>
             ))}
             <motion.a
-              href="tel:663108134"
+              href="/menu"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: navLinks.length * 0.08 }}
               onClick={() => setMobileOpen(false)}
               className="mt-4 px-8 py-3 bg-gold-gradient text-[#0A0A0A] font-semibold tracking-wider rounded-full cursor-pointer"
             >
-              663 108 134
+              Pedir Online
             </motion.a>
           </motion.div>
         )}
