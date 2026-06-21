@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
 const floatingOrbs = [
@@ -12,6 +13,19 @@ const floatingOrbs = [
 ];
 
 export default function Hero() {
+  const [orderOpen, setOrderOpen] = useState(false);
+  const orderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onDocClick(e: MouseEvent) {
+      if (orderRef.current && !orderRef.current.contains(e.target as Node)) {
+        setOrderOpen(false);
+      }
+    }
+    if (orderOpen) document.addEventListener('mousedown', onDocClick);
+    return () => document.removeEventListener('mousedown', onDocClick);
+  }, [orderOpen]);
+
   return (
     <section
       id="hero"
@@ -120,15 +134,76 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.85 }}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            <a
-              href="tel:663108134"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold-gradient text-[#0A0A0A] font-semibold tracking-wider rounded-full hover:opacity-90 active:scale-95 transition-all duration-200 cursor-pointer text-sm"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.63 9.5 19.79 19.79 0 01.56 4.18 2 2 0 012.53 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.72 6.72l.88-.88a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-              </svg>
-              Pedir Ahora
-            </a>
+            <div ref={orderRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setOrderOpen((v) => !v)}
+                aria-expanded={orderOpen}
+                aria-haspopup="menu"
+                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gold-gradient text-[#0A0A0A] font-semibold tracking-wider rounded-full hover:opacity-90 active:scale-95 transition-all duration-200 cursor-pointer text-sm w-full sm:w-auto"
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.63 9.5 19.79 19.79 0 01.56 4.18 2 2 0 012.53 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.72 6.72l.88-.88a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                </svg>
+                Pedir Ahora
+                <svg
+                  className={`w-3 h-3 transition-transform duration-200 ${orderOpen ? 'rotate-180' : ''}`}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                >
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+
+              <AnimatePresence>
+                {orderOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                    transition={{ duration: 0.18, ease: 'easeOut' }}
+                    role="menu"
+                    className="absolute z-30 top-full left-0 right-0 sm:left-0 sm:right-auto sm:min-w-[260px] mt-3 p-2 rounded-2xl bg-[#0A0A0A] border border-[rgba(200,155,82,0.25)] shadow-2xl shadow-black/60 backdrop-blur-sm"
+                  >
+                    <a
+                      href="tel:663108134"
+                      role="menuitem"
+                      onClick={() => setOrderOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#F8F4EE] hover:bg-[rgba(200,155,82,0.1)] transition-colors cursor-pointer"
+                    >
+                      <span className="w-9 h-9 rounded-full bg-[rgba(200,155,82,0.12)] border border-[rgba(200,155,82,0.3)] flex items-center justify-center text-[#C89B52]">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.63 9.5 19.79 19.79 0 01.56 4.18 2 2 0 012.53 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 9.91a16 16 0 006.72 6.72l.88-.88a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                        </svg>
+                      </span>
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm font-semibold">Llamar</span>
+                        <span className="block text-xs text-[#D6D0C7]/60">663 108 134</span>
+                      </span>
+                    </a>
+                    <a
+                      href="/menu"
+                      role="menuitem"
+                      onClick={() => setOrderOpen(false)}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl text-[#F8F4EE] hover:bg-[rgba(200,155,82,0.1)] transition-colors cursor-pointer"
+                    >
+                      <span className="w-9 h-9 rounded-full bg-[rgba(200,155,82,0.12)] border border-[rgba(200,155,82,0.3)] flex items-center justify-center text-[#C89B52]">
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2z" />
+                          <path d="M9 7h6M9 11h6M9 15h4" />
+                        </svg>
+                      </span>
+                      <span className="flex-1 min-w-0">
+                        <span className="block text-sm font-semibold">Pedir Online</span>
+                        <span className="block text-xs text-[#D6D0C7]/60">Recogida en restaurante</span>
+                      </span>
+                    </a>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </motion.div>
 
           {/* Stats row */}
