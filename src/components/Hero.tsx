@@ -197,7 +197,7 @@ export default function Hero() {
                       </span>
                       <span className="flex-1 min-w-0">
                         <span className="block text-sm font-semibold">Pedir Online</span>
-                        <span className="block text-xs text-[#D6D0C7]/60">Recogida en restaurante</span>
+                        <span className="block text-xs text-[#D6D0C7]/60">Entrega a domicilio o recogida</span>
                       </span>
                     </a>
                   </motion.div>
