@@ -170,18 +170,30 @@ export async function POST(request: Request) {
     return Response.json({ error: 'Error al guardar artículos del pedido' }, { status: 500 })
   }
 
+  let emailStatus: 'sent' | 'skipped_no_key' | 'failed' = 'skipped_no_key'
+  let emailError: string | null = null
+
   if (process.env.RESEND_API_KEY) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.emails.send({
+      const result = await resend.emails.send({
         from: EMAIL_FROM,
         to: NOTIFY_RECIPIENTS,
         replyTo: body.email.trim(),
         subject: `Nuevo pedido ${order.order_number} — ${total.toFixed(2)}€`,
         html: buildEmail({ orderNumber: order.order_number, body, subtotal, total }),
       })
+      if (result.error) {
+        emailStatus = 'failed'
+        emailError = result.error.message || JSON.stringify(result.error)
+        console.error('order email rejected by Resend', result.error)
+      } else {
+        emailStatus = 'sent'
+      }
     } catch (e) {
-      console.error('email send failed', e)
+      emailStatus = 'failed'
+      emailError = e instanceof Error ? e.message : String(e)
+      console.error('order email send threw', e)
     }
   } else {
     console.warn('RESEND_API_KEY not set; skipping order email')
@@ -191,5 +203,7 @@ export async function POST(request: Request) {
     success: true,
     orderId: order.id,
     orderNumber: order.order_number,
+    emailStatus,
+    emailError,
   })
 }
