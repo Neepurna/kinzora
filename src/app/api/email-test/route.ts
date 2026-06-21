@@ -17,7 +17,7 @@ export async function GET() {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const result = await resend.emails.send({
       from,
-      to: ['neepurna@gmail.com', 'kinzora624@gmail.com'],
+      to: ['neepurna@gmail.com', 'kinzora694@gmail.com'],
       subject: 'Kinzora email test',
       html: '<p>If you see this, Resend wiring is correct.</p>',
     })

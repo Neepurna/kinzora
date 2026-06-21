@@ -27,7 +27,7 @@ interface OrderBody {
   items: OrderItemInput[]
 }
 
-const NOTIFY_RECIPIENTS = ['neepurna@gmail.com', 'kinzora624@gmail.com']
+const NOTIFY_RECIPIENTS = ['neepurna@gmail.com', 'kinzora694@gmail.com']
 const EMAIL_FROM = process.env.ORDER_EMAIL_FROM || 'Kinzora Pedidos <onboarding@resend.dev>'
 
 function escapeHtml(s: string) {
