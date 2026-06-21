@@ -17,9 +17,10 @@ interface OrderBody {
   customer_name: string
   phone: string
   email: string
-  address: string
-  zip: string
-  city: string
+  order_type?: 'delivery' | 'pickup'
+  address?: string | null
+  zip?: string | null
+  city?: string | null
   delivery_time?: string | null
   num_guests?: number | null
   payment_method: 'efectivo' | 'tarjeta'
@@ -42,10 +43,12 @@ function escapeHtml(s: string) {
 function buildEmail(payload: {
   orderNumber: string
   body: OrderBody
+  orderType: 'delivery' | 'pickup'
   subtotal: number
   total: number
 }) {
-  const { orderNumber, body, total } = payload
+  const { orderNumber, body, orderType, total } = payload
+  const isPickup = orderType === 'pickup'
   const itemRows = body.items
     .map(
       (i) => `
@@ -61,7 +64,10 @@ function buildEmail(payload: {
 <html><body style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;background:#0a0a0a;color:#f8f4ee;margin:0;padding:24px;">
   <div style="max-width:560px;margin:0 auto;background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:24px;">
     <h1 style="color:#c89b52;font-size:20px;margin:0 0 4px;">Nuevo pedido ${escapeHtml(orderNumber)}</h1>
-    <p style="color:#888;font-size:13px;margin:0 0 20px;">Recibido en kinzora-sushi.com</p>
+    <p style="color:#888;font-size:13px;margin:0 0 4px;">Recibido en kinzora-sushi.com</p>
+    <p style="color:#c89b52;font-size:12px;text-transform:uppercase;letter-spacing:1.5px;margin:0 0 20px;">
+      ${isPickup ? '· Recogida en restaurante ·' : '· Entrega a domicilio ·'}
+    </p>
 
     <h2 style="color:#c89b52;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:16px 0 8px;">Cliente</h2>
     <table style="width:100%;font-size:14px;">
@@ -70,13 +76,17 @@ function buildEmail(payload: {
       <tr><td style="color:#888;padding:4px 0;">Email</td><td>${escapeHtml(body.email)}</td></tr>
     </table>
 
-    <h2 style="color:#c89b52;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:20px 0 8px;">Entrega</h2>
+    <h2 style="color:#c89b52;font-size:14px;text-transform:uppercase;letter-spacing:1px;margin:20px 0 8px;">${isPickup ? 'Recogida' : 'Entrega'}</h2>
     <table style="width:100%;font-size:14px;">
-      <tr><td style="color:#888;padding:4px 0;width:120px;">Dirección</td><td>${escapeHtml(body.address)}</td></tr>
-      <tr><td style="color:#888;padding:4px 0;">Código postal</td><td>${escapeHtml(body.zip)}</td></tr>
-      <tr><td style="color:#888;padding:4px 0;">Ciudad</td><td>${escapeHtml(body.city)}</td></tr>
-      ${body.delivery_time ? `<tr><td style="color:#888;padding:4px 0;">Hora entrega</td><td>${escapeHtml(body.delivery_time)}</td></tr>` : ''}
-      ${body.num_guests ? `<tr><td style="color:#888;padding:4px 0;">Comensales</td><td>${body.num_guests}</td></tr>` : ''}
+      ${
+        isPickup
+          ? `<tr><td style="color:#888;padding:4px 0;width:120px;">Lugar</td><td>C/ Vizconde de Matamala, 5 · Salamanca, Madrid</td></tr>`
+          : `<tr><td style="color:#888;padding:4px 0;width:120px;">Dirección</td><td>${escapeHtml(body.address || '')}</td></tr>
+             <tr><td style="color:#888;padding:4px 0;">Código postal</td><td>${escapeHtml(body.zip || '')}</td></tr>
+             <tr><td style="color:#888;padding:4px 0;">Ciudad</td><td>${escapeHtml(body.city || '')}</td></tr>`
+      }
+      ${body.delivery_time ? `<tr><td style="color:#888;padding:4px 0;">${isPickup ? 'Hora recogida' : 'Hora entrega'}</td><td>${escapeHtml(body.delivery_time)}</td></tr>` : ''}
+      ${!isPickup && body.num_guests ? `<tr><td style="color:#888;padding:4px 0;">Comensales</td><td>${body.num_guests}</td></tr>` : ''}
       <tr><td style="color:#888;padding:4px 0;">Pago</td><td>${body.payment_method === 'efectivo' ? 'Efectivo' : 'Tarjeta'}</td></tr>
     </table>
 
@@ -104,17 +114,20 @@ function buildEmail(payload: {
 
 export async function POST(request: Request) {
   const body = (await request.json()) as OrderBody
+  const orderType = body.order_type === 'pickup' ? 'pickup' : 'delivery'
+  const isPickup = orderType === 'pickup'
 
   if (
     !body.customer_name?.trim() ||
     !body.phone?.trim() ||
     !body.email?.trim() ||
-    !body.address?.trim() ||
-    !body.zip?.trim() ||
-    !body.city?.trim() ||
     !body.payment_method
   ) {
     return Response.json({ error: 'Faltan campos obligatorios' }, { status: 400 })
+  }
+
+  if (!isPickup && (!body.address?.trim() || !body.zip?.trim() || !body.city?.trim())) {
+    return Response.json({ error: 'Dirección de entrega obligatoria' }, { status: 400 })
   }
 
   if (!['efectivo', 'tarjeta'].includes(body.payment_method)) {
@@ -134,12 +147,12 @@ export async function POST(request: Request) {
       customer_name: body.customer_name.trim(),
       phone: body.phone.trim(),
       email: body.email.trim(),
-      order_type: 'delivery',
-      address: body.address.trim(),
-      zip: body.zip.trim(),
-      city: body.city.trim(),
+      order_type: orderType,
+      address: isPickup ? null : body.address?.trim() || null,
+      zip: isPickup ? null : body.zip?.trim() || null,
+      city: isPickup ? null : body.city?.trim() || null,
       delivery_time: body.delivery_time?.trim() || null,
-      num_guests: body.num_guests ?? null,
+      num_guests: isPickup ? null : body.num_guests ?? null,
       payment_method: body.payment_method,
       notes: body.notes?.trim() || null,
       subtotal,
@@ -181,7 +194,7 @@ export async function POST(request: Request) {
         to: NOTIFY_RECIPIENTS,
         replyTo: body.email.trim(),
         subject: `Nuevo pedido ${order.order_number} — ${total.toFixed(2)}€`,
-        html: buildEmail({ orderNumber: order.order_number, body, subtotal, total }),
+        html: buildEmail({ orderNumber: order.order_number, body, orderType, subtotal, total }),
       })
       if (result.error) {
         emailStatus = 'failed'

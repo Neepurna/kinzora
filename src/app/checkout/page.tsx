@@ -7,6 +7,7 @@ import { ArrowLeft, Minus, Plus, Trash2 } from 'lucide-react'
 import { useCartStore } from '@/lib/cart-store'
 
 type PaymentMethod = 'efectivo' | 'tarjeta'
+type OrderType = 'delivery' | 'pickup'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -16,6 +17,7 @@ export default function CheckoutPage() {
   const subtotal = useCartStore((s) => s.subtotal)
   const clearCart = useCartStore((s) => s.clearCart)
 
+  const [orderType, setOrderType] = useState<OrderType>('delivery')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -29,15 +31,11 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  const isPickup = orderType === 'pickup'
   const phoneValid = phone.replace(/\D/g, '').length >= 9
   const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  const formValid =
-    name.trim() &&
-    emailValid &&
-    phoneValid &&
-    address.trim() &&
-    zip.trim() &&
-    city.trim()
+  const addressValid = isPickup || (address.trim() && zip.trim() && city.trim())
+  const formValid = name.trim() && emailValid && phoneValid && addressValid
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -58,9 +56,10 @@ export default function CheckoutPage() {
           customer_name: name.trim(),
           email: email.trim(),
           phone: phone.trim(),
-          address: address.trim(),
-          zip: zip.trim(),
-          city: city.trim(),
+          order_type: orderType,
+          address: isPickup ? null : address.trim(),
+          zip: isPickup ? null : zip.trim(),
+          city: isPickup ? null : city.trim(),
           delivery_time: deliveryTime.trim() || null,
           num_guests: numGuests ? Number(numGuests) : null,
           payment_method: payment,
@@ -125,6 +124,32 @@ export default function CheckoutPage() {
       <div className="kinzora-container py-8">
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
+            {/* Order type toggle */}
+            <div className="glass-dark rounded-2xl p-6">
+              <h2 className="font-heading text-lg font-semibold text-[#C89B52] mb-4">¿Cómo quieres tu pedido?</h2>
+              <div className="grid grid-cols-2 gap-3">
+                {(['delivery', 'pickup'] as OrderType[]).map((opt) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => setOrderType(opt)}
+                    className={`py-4 rounded-xl border text-sm font-medium tracking-wider uppercase transition-colors cursor-pointer ${
+                      orderType === opt
+                        ? 'bg-gold-gradient text-[#0A0A0A] border-transparent'
+                        : 'text-[#D6D0C7]/70 border-[rgba(200,155,82,0.2)] hover:border-[rgba(200,155,82,0.5)]'
+                    }`}
+                  >
+                    {opt === 'delivery' ? 'Entrega a domicilio' : 'Recogida en restaurante'}
+                  </button>
+                ))}
+              </div>
+              {isPickup && (
+                <p className="text-xs text-[#D6D0C7]/50 mt-3">
+                  C/ Vizconde de Matamala, 5 · Salamanca, Madrid
+                </p>
+              )}
+            </div>
+
             <div className="glass-dark rounded-2xl p-6">
               <h2 className="font-heading text-lg font-semibold text-[#C89B52] mb-4">Datos de contacto</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -164,51 +189,55 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="glass-dark rounded-2xl p-6">
-              <h2 className="font-heading text-lg font-semibold text-[#C89B52] mb-4">Dirección de entrega</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="sm:col-span-2">
-                  <label className={labelClass}>Dirección *</label>
-                  <input
-                    type="text"
-                    required
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    className={fieldClass}
-                    placeholder="Calle, número, piso"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Código postal *</label>
-                  <input
-                    type="text"
-                    required
-                    value={zip}
-                    onChange={(e) => setZip(e.target.value)}
-                    className={fieldClass}
-                    placeholder="28028"
-                    inputMode="numeric"
-                  />
-                </div>
-                <div>
-                  <label className={labelClass}>Ciudad *</label>
-                  <input
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    className={fieldClass}
-                    placeholder="Madrid"
-                  />
+            {!isPickup && (
+              <div className="glass-dark rounded-2xl p-6">
+                <h2 className="font-heading text-lg font-semibold text-[#C89B52] mb-4">Dirección de entrega</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="sm:col-span-2">
+                    <label className={labelClass}>Dirección *</label>
+                    <input
+                      type="text"
+                      required
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className={fieldClass}
+                      placeholder="Calle, número, piso"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Código postal *</label>
+                    <input
+                      type="text"
+                      required
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                      className={fieldClass}
+                      placeholder="28028"
+                      inputMode="numeric"
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClass}>Ciudad *</label>
+                    <input
+                      type="text"
+                      required
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className={fieldClass}
+                      placeholder="Madrid"
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
             <div className="glass-dark rounded-2xl p-6">
               <h2 className="font-heading text-lg font-semibold text-[#C89B52] mb-4">Detalles del pedido</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className={labelClass}>Hora de entrega</label>
+                <div className={isPickup ? 'sm:col-span-2' : ''}>
+                  <label className={labelClass}>
+                    {isPickup ? 'Hora de recogida' : 'Hora de entrega'}
+                  </label>
                   <input
                     type="time"
                     value={deliveryTime}
@@ -216,18 +245,20 @@ export default function CheckoutPage() {
                     className={fieldClass}
                   />
                 </div>
-                <div>
-                  <label className={labelClass}>Número de comensales</label>
-                  <input
-                    type="number"
-                    min={1}
-                    max={50}
-                    value={numGuests}
-                    onChange={(e) => setNumGuests(e.target.value)}
-                    className={fieldClass}
-                    placeholder="2"
-                  />
-                </div>
+                {!isPickup && (
+                  <div>
+                    <label className={labelClass}>Número de comensales</label>
+                    <input
+                      type="number"
+                      min={1}
+                      max={50}
+                      value={numGuests}
+                      onChange={(e) => setNumGuests(e.target.value)}
+                      className={fieldClass}
+                      placeholder="2"
+                    />
+                  </div>
+                )}
                 <div className="sm:col-span-2">
                   <label className={labelClass}>Forma de pago *</label>
                   <div className="grid grid-cols-2 gap-3">
@@ -254,7 +285,11 @@ export default function CheckoutPage() {
                     onChange={(e) => setNotes(e.target.value)}
                     rows={3}
                     className={`${fieldClass} resize-none`}
-                    placeholder="Alergias, peticiones especiales, indicaciones de entrega..."
+                    placeholder={
+                      isPickup
+                        ? 'Alergias, peticiones especiales...'
+                        : 'Alergias, peticiones especiales, indicaciones de entrega...'
+                    }
                   />
                 </div>
               </div>

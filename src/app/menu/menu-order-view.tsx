@@ -236,7 +236,7 @@ export default function MenuOrderView({
           <h1 className="font-heading text-3xl md:text-4xl font-bold text-[#F8F4EE]">
             Pedir <span className="text-gold-gradient italic">Online</span>
           </h1>
-          <p className="mt-3 text-[#D6D0C7]/60 text-sm">Solo recogida en restaurante</p>
+          <p className="mt-3 text-[#D6D0C7]/60 text-sm">Entrega a domicilio o recogida en restaurante</p>
         </div>
 
         {/* Category tabs */}
