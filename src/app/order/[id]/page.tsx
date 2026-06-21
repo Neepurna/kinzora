@@ -4,22 +4,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { CheckCircle2, Clock, ChefHat, Package, ArrowLeft, Copy, Check, Phone, Home } from 'lucide-react'
+import { CheckCircle2, ArrowLeft, Copy, Check, Phone, Home } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
-import type { Order, OrderItem, OrderStatus } from '@/lib/types'
-
-const statusSteps: { key: OrderStatus; label: string; icon: React.ReactNode }[] = [
-  { key: 'pending', label: 'Recibido', icon: <Clock size={16} /> },
-  { key: 'accepted', label: 'Aceptado', icon: <CheckCircle2 size={16} /> },
-  { key: 'preparing', label: 'Preparando', icon: <ChefHat size={16} /> },
-  { key: 'ready', label: 'Listo', icon: <Package size={16} /> },
-  { key: 'completed', label: 'Completado', icon: <CheckCircle2 size={16} /> },
-]
-
-function getStepIndex(status: OrderStatus) {
-  if (status === 'cancelled') return -1
-  return statusSteps.findIndex((s) => s.key === status)
-}
+import type { Order, OrderItem } from '@/lib/types'
 
 export default function OrderTrackingPage() {
   const { id } = useParams<{ id: string }>()
@@ -80,7 +67,6 @@ export default function OrderTrackingPage() {
     )
   }
 
-  const currentStep = getStepIndex(order.status)
   const cancelled = order.status === 'cancelled'
 
   return (
@@ -168,55 +154,19 @@ export default function OrderTrackingPage() {
           )}
         </motion.div>
 
-        {/* Status tracker */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="glass-dark rounded-2xl p-6 mb-6"
-        >
-          <h2 className="font-heading text-sm font-semibold text-[#C89B52] uppercase tracking-wider mb-5">
-            Estado del pedido
-          </h2>
-          {cancelled ? (
-            <div className="text-center py-4">
-              <p className="text-red-400 font-semibold text-lg">Pedido Cancelado</p>
-              <p className="text-[#D6D0C7]/50 text-sm mt-1">
-                Contacta con el restaurante para más información
-              </p>
-            </div>
-          ) : (
-            <div className="flex items-center justify-between">
-              {statusSteps.map((step, i) => (
-                <div key={step.key} className="flex-1 flex flex-col items-center relative">
-                  <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center transition-colors z-10 ${
-                      i <= currentStep
-                        ? 'bg-[#C89B52] text-[#0A0A0A]'
-                        : 'bg-[#1a1a1a] text-[#D6D0C7]/30 border border-[rgba(200,155,82,0.1)]'
-                    }`}
-                  >
-                    {step.icon}
-                  </div>
-                  <span
-                    className={`text-[9px] mt-2 tracking-wider uppercase text-center ${
-                      i <= currentStep ? 'text-[#C89B52]' : 'text-[#D6D0C7]/30'
-                    }`}
-                  >
-                    {step.label}
-                  </span>
-                  {i < statusSteps.length - 1 && (
-                    <div
-                      className={`absolute top-[18px] left-[calc(50%+18px)] right-[calc(-50%+18px)] h-px ${
-                        i < currentStep ? 'bg-[#C89B52]' : 'bg-[rgba(200,155,82,0.1)]'
-                      }`}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </motion.div>
+        {cancelled && (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="glass-dark rounded-2xl p-6 mb-6 text-center"
+          >
+            <p className="text-red-400 font-semibold text-lg">Pedido Cancelado</p>
+            <p className="text-[#D6D0C7]/50 text-sm mt-1">
+              Contacta con el restaurante para más información
+            </p>
+          </motion.div>
+        )}
 
         {/* Order details */}
         <motion.div

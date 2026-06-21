@@ -200,7 +200,9 @@ export default function MenuOrderView({
 }) {
   const [activeTab, setActiveTab] = useState(categories[0]?.slug ?? '')
   const [cartOpen, setCartOpen] = useState(false)
-  const itemCount = useCartStore((s) => s.itemCount)
+  const itemCount = useCartStore((s) =>
+    s.items.reduce((sum, i) => sum + i.quantity, 0)
+  )
 
   const activeCategory = categories.find((c) => c.slug === activeTab)
   const categoryItems = items.filter((i) => i.category_id === activeCategory?.id)
@@ -218,9 +220,9 @@ export default function MenuOrderView({
             className="relative p-2 text-[#D6D0C7]/60 hover:text-[#C89B52] transition-colors cursor-pointer"
           >
             <ShoppingBag size={22} />
-            {itemCount() > 0 && (
+            {itemCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#C89B52] text-[#0A0A0A] text-[10px] font-bold flex items-center justify-center">
-                {itemCount()}
+                {itemCount}
               </span>
             )}
           </button>
@@ -285,13 +287,13 @@ export default function MenuOrderView({
       </div>
 
       {/* Floating cart button (mobile) */}
-      {itemCount() > 0 && (
+      {itemCount > 0 && (
         <button
           onClick={() => setCartOpen(true)}
           className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-30 bg-[#C89B52] text-[#0A0A0A] px-6 py-3 rounded-full font-semibold text-sm flex items-center gap-2 shadow-lg hover:opacity-90 transition-opacity cursor-pointer"
         >
           <ShoppingBag size={16} />
-          Ver pedido ({itemCount()})
+          Ver pedido ({itemCount})
         </button>
       )}
 
